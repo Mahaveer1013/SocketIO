@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Account</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/Sign_up.css">
+    
+</head>
+<body background="static/image/Login.jpg">
+
+	<div class="container">
+        <div class="head">
+		    <h2>Registration Page</h2>
+        </div>
+		<form method="post" action="/sign_up">
+            <div class="signup">
+                <h3>Enter Registration Details</h3>
+                <table style="font-size:15px;">
+                    <tr><td><b>Email</b></td>
+                    <td><input type="text" placeholder="Enter Email" name="email" id="email" required></td></tr>
+                    <tr><td><b>Password:</b></td>
+                    <td><input type="password" placeholder="Enter Password" name="pass" id="pass" required></td></tr>
+                </table>
+            </div>
+		<button type="submit">Sign Up</button>
+        </form>
+        <p>Already Have An Account ? <br><a href={{url_for('login_page')}}>Login Here</a></p>
+        </div>
+        
+
+</body></html>

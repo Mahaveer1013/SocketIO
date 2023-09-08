@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Late Form</title>  
+
+
+</head>
+<body>
+    <form name="late_form" id="late_form">
+        <table>
+            <tr>
+                <td>Emp ID :</td>
+                <td><input type="text"  id="emp_id"></td>
+            </tr>
+            <tr>
+                <td>Emp name :</td>
+                <td><input type="text" id="emp_name"></td>
+            </tr>
+            <tr>
+                <td>Reason :</td>
+                <td><input type="textarea" id="reason"></td>
+            </tr>
+            <tr>
+                <td>From Time :</td>
+                <td><input type="time" id="from_time"></td>
+            </tr>
+            <tr>
+                <td>To Time :</td>
+                <td><input type="time" id="to_time"></td>
+            </tr>
+    </table>
+<input type="button" value='submit' class="submit" name="emp_late">
+</form>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>                                   
+<script src="https://cdn.socket.io/4.7.2/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('connect', function() {
+            socket.emit('my event');
+        });
+    </script>
+    <script type="module">
+        import io from 'socket.io-client';
+        const socket = io();
+    </script>
+    <script>
+        var submitBtn = document.querySelector(".submit");
+        submitBtn.addEventListener('click',function(){
+            console.log("clicked")
+            const lateDet ={}
+            var EmpId = document.getElementById("emp_id");
+            var EmpName = document.getElementById("emp_name");
+            var Reason = document.getElementById("reason");
+            var FromTime = document.getElementById("from_time");
+            var ToTime = document.getElementById("to_time");
+            lateDet.emp_id = EmpId.value;
+            lateDet.emp_name = EmpName.value;
+            lateDet.reason = Reason.value;
+            lateDet.from_time = FromTime.value;
+            lateDet.to_time = ToTime.value;
+            console.log('Form Data:', lateDet);
+            socket.emit('late',lateDet);
+            document.getElementById("late_form").reset();
+        });
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Form</h1> 
+
+    <div id="lateData">
+        <h2>Late Data</h2>
+        <table border="2">
+            <tr>
+                <th>Emp ID</th>
+                <th>Emp Name</th>
+                <th>Reason</th>
+                <th>From</th>
+                <th>To</th>
+            </tr>
+
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+    <!-- Add a script to listen for the late_data event and update the UI -->
+    <script type="text/javascript">
+        function updateLateData(all_Data) {
+            var lateDataList = document.querySelector('table');
+            // Clear existing table rows
+            lateDataList.innerHTML = '<tr><th>Emp ID</th><th>Emp Name</th><th>Reason</th><th>From</th><th>To</th></tr>';
+            
+            // Update the HTML table with the received data
+            for (var i = 0; i < all_Data.length; i++) {
+                var rowData = all_Data[i];
+                var row = document.createElement('tr');
+                row.innerHTML = `<td>${rowData.emp_id}</td>
+                                 <td>${rowData.emp_name}</td>
+                                 <td>${rowData.reason}</td>
+                                 <td>${rowData.from_time}</td>
+                                 <td>${rowData.to_time}</td>`;
+                // Append the new data row to the table
+                lateDataList.appendChild(row);
+            }
+            
+            // Store the data in local storage
+            localStorage.setItem('lateData', JSON.stringify(all_Data));
+        }
+
+        var socket = io();
+
+        // Function to load data from local storage when the page is loaded
+        function loadLateDataFromLocalStorage() {
+            var storedData = JSON.parse(localStorage.getItem('lateData'));
+            if (storedData) {
+                // Update the table with stored data
+                updateLateData(storedData);
+            }
+        }
+
+        // Listen for the late event and update the UI
+        socket.on('late', function (all_Data) {
+            updateLateData(all_Data);
+        });
+
+        // Load data from local storage when the page is loaded
+        window.addEventListener('load', function () {
+            loadLateDataFromLocalStorage();
+        });
+
+        // Call the function to load data when the page is reloaded
+        window.addEventListener('beforeunload', function () {
+            loadLateDataFromLocalStorage();
+        });
+    </script>
+</body>
+</html>
